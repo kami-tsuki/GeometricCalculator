@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import json
 import os
+import math
 
 app = Flask(__name__)
 
@@ -31,9 +32,9 @@ def calculate():
     elif shape == 'triangle' and operation == 'perimeter':
         result = a + b + (a**2 + b**2)**0.5
     elif shape == 'circle' and operation == 'area':
-        result = 3.14159 * radius**2
+        result = math.pi * radius**2
     elif shape == 'circle' and operation == 'perimeter':
-        result = 2 * 3.14159 * radius
+        result = 2 * math.pi * radius
     else:
         result = 'Invalid input'
 
