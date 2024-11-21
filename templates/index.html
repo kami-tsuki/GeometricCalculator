@@ -4,172 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config.app_name }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #container { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
-        #canvasContainer { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        #canvasDimensions { margin-top: 10px; font-size: 14px; color: #555; text-align: center; }
-        #formContainer { flex: 1; min-width: 300px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; }
-        input, select, button { padding: 10px; font-size: 16px; }
-        canvas { border: 1px solid #ccc; }
-        #result { margin-top: 20px; font-size: 18px; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/buttons.css">
 </head>
 <body>
-<h1>{{ config.app_name }}</h1>
-<div id="container">
-    <div id="canvasContainer">
+<header>
+    <h1>{{ config.app_name }}</h1>
+</header>
+<main id="container">
+    <section id="canvasContainer">
         <canvas id="visualCanvas" width="400" height="400"></canvas>
         <div id="canvasDimensions"></div>
-    </div>
-    <div id="formContainer">
+    </section>
+    <section id="formContainer">
         <div class="form-group">
-            <label for="shape">Select Shape:</label>
-            <select id="shape" onchange="updateInputsAndCanvas()">
+            <label>Select Shape:</label>
+            <div id="shapeRadios" class="radio-group">
                 {% for shape in config.shapes %}
-                    <option value="{{ shape }}">{{ shape.capitalize() }}</option>
+                    <label class="radio-label">
+                        <input type="radio" name="shape" value="{{ shape }}" onchange="updateInputsAndCanvas()" class="radio-input" />
+                        {{ shape.capitalize() }}
+                    </label>
                 {% endfor %}
-            </select>
-        </div>
-        <div id="inputs">
-            <div class="form-group">
-                <label for="a">a:</label>
-                <input type="number" id="a" oninput="updateCanvas()" />
-            </div>
-            <div class="form-group">
-                <label for="b">b:</label>
-                <input type="number" id="b" oninput="updateCanvas()" />
             </div>
         </div>
+        <div id="inputs"></div>
         <div class="form-group">
             <label for="operation">Select Operation:</label>
-            <select id="operation">
+            <select id="operation" onchange="updateCanvas()" class="dropdown">
                 {% for operation in config.operations %}
                     <option value="{{ operation }}">{{ operation.capitalize() }}</option>
                 {% endfor %}
             </select>
         </div>
-        <button onclick="calculate()">Calculate</button>
+        <button class="primary-btn" onclick="calculate()">Calculate</button>
         <div id="result"></div>
-    </div>
-</div>
-<script>
-    const canvas = document.getElementById("visualCanvas");
-    const ctx = canvas.getContext("2d");
-    const canvasDimensions = document.getElementById("canvasDimensions");
-
-    function updateInputsAndCanvas() {
-        const shape = document.getElementById("shape").value;
-        const inputsDiv = document.getElementById("inputs");
-        inputsDiv.innerHTML = "";
-
-        if (shape === "rectangle") {
-            inputsDiv.innerHTML = `
-                    <div class="form-group">
-                        <label for="a">Width (a):</label>
-                        <input type="number" id="a" oninput="updateCanvas()" />
-                    </div>
-                    <div class="form-group">
-                        <label for="b">Height (b):</label>
-                        <input type="number" id="b" oninput="updateCanvas()" />
-                    </div>
-                `;
-        } else if (shape === "triangle") {
-            inputsDiv.innerHTML = `
-                    <div class="form-group">
-                        <label for="a">Base (a):</label>
-                        <input type="number" id="a" oninput="updateCanvas()" />
-                    </div>
-                    <div class="form-group">
-                        <label for="b">Height (b):</label>
-                        <input type="number" id="b" oninput="updateCanvas()" />
-                    </div>
-                `;
-        } else if (shape === "circle") {
-            inputsDiv.innerHTML = `
-                    <div class="form-group">
-                        <label for="radius">Radius:</label>
-                        <input type="number" id="radius" oninput="updateCanvas()" />
-                    </div>
-                `;
-        }
-
-        updateCanvas();
-    }
-
-    function updateCanvas() {
-        const shape = document.getElementById("shape").value;
-        const a = parseFloat(document.getElementById("a")?.value || 50);
-        const b = parseFloat(document.getElementById("b")?.value || 50);
-        const radius = parseFloat(document.getElementById("radius")?.value || 50);
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (shape === "rectangle") {
-            const maxDim = Math.max(a, b);
-            const scale = 300 / maxDim;
-
-            const displayWidth = a * scale;
-            const displayHeight = b * scale;
-
-            ctx.fillStyle = "#0074D9";
-            ctx.fillRect((400 - displayWidth) / 2, (400 - displayHeight) / 2, displayWidth, displayHeight);
-
-            canvasDimensions.textContent = `Rectangle - Width: ${a}, Height: ${b}`;
-        } else if (shape === "triangle") {
-            const maxDim = Math.max(a, b);
-            const scale = 300 / maxDim;
-
-            const displayBase = a * scale;
-            const displayHeight = b * scale;
-
-            ctx.beginPath();
-            ctx.moveTo(200, (400 - displayHeight) / 2); // top vertex
-            ctx.lineTo(200 - displayBase / 2, 400 - (400 - displayHeight) / 2); // bottom-left
-            ctx.lineTo(200 + displayBase / 2, 400 - (400 - displayHeight) / 2); // bottom-right
-            ctx.closePath();
-
-            ctx.fillStyle = "#2ECC40";
-            ctx.fill();
-
-            canvasDimensions.textContent = `Triangle - Base: ${a}, Height: ${b}`;
-        } else if (shape === "circle") {
-            const scale = 150 / radius;
-            const displayRadius = radius * scale;
-
-            ctx.beginPath();
-            ctx.arc(200, 200, displayRadius, 0, 2 * Math.PI);
-            ctx.fillStyle = "#B10DC9";
-            ctx.fill();
-
-            canvasDimensions.textContent = `Circle - Radius: ${radius}`;
-        }
-    }
-
-    function calculate() {
-        const shape = document.getElementById("shape").value;
-        const operation = document.getElementById("operation").value;
-        const a = parseFloat(document.getElementById("a")?.value || 0);
-        const b = parseFloat(document.getElementById("b")?.value || 0);
-        const radius = parseFloat(document.getElementById("radius")?.value || 0);
-
-        fetch('/calculate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ shape, operation, a, b, radius })
-        })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").textContent = `Result: ${data.result}`;
-            });
-
-        updateCanvas();
-    }
-
-    // Initialize the first render
-    updateInputsAndCanvas();
-</script>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 {{ config.app_name }}. All rights reserved.</p>
+</footer>
+<script src="static/js/canvas.js"></script>
+<script src="static/js/calculate.js"></script>
+<script src="static/js/init.js"></script>
 </body>
 </html>

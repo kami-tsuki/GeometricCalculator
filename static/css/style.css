@@ -1,0 +1,95 @@
+/* General Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #e4e4e4;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    background: linear-gradient(135deg, #5e001f, #2b0028);
+    color: white;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #2b0028;
+    color: #a1a1a1;
+    font-size: 0.9em;
+    position: sticky;
+    bottom: 0;
+}
+
+/* Canvas and Inputs */
+#canvasContainer, #formContainer {
+    flex: 1;
+    padding: 20px;
+    background: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#canvasContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#canvasDimensions {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #bcbcbc;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #e4e4e4;
+}
+
+
+
+/* Dropdowns */
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    background: #3a3a3a;
+    transition: border 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #900c3f;
+    outline: none;
+}

@@ -1,0 +1,37 @@
+button.primary-btn {
+    background: linear-gradient(135deg, #900c3f, #2b0028);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button.primary-btn:hover {
+    background: #ff4d4d;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #0074D9, #001F3F);
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #001F3F, #0074D9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
