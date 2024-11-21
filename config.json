@@ -1,0 +1,10 @@
+{
+  "app_name": "Geometry Calculator",
+  "shapes": ["rectangle", "triangle", "circle"],
+  "operations": ["area", "perimeter"],
+  "default_radius": 1,
+  "default_values": {
+    "a": 1,
+    "b": 1
+  }
+}
