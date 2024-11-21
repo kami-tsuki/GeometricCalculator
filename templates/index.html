@@ -8,7 +8,7 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         #container { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
         #canvasContainer { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        #canvasDimensions { margin-top: 10px; font-size: 14px; color: #555; }
+        #canvasDimensions { margin-top: 10px; font-size: 14px; color: #555; text-align: center; }
         #formContainer { flex: 1; min-width: 300px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; }
@@ -108,47 +108,41 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         if (shape === "rectangle") {
-            const aspectRatio = a / b;
-            const displayWidth = aspectRatio >= 1 ? 300 : 300 * aspectRatio;
-            const displayHeight = aspectRatio >= 1 ? 300 / aspectRatio : 300;
+            const maxDim = Math.max(a, b);
+            const scale = 300 / maxDim;
+
+            const displayWidth = a * scale;
+            const displayHeight = b * scale;
 
             ctx.fillStyle = "#0074D9";
-            ctx.fillRect(50, 50, displayWidth, displayHeight);
-
-            ctx.strokeStyle = "#FF4136";
-            ctx.lineWidth = 2;
-            ctx.strokeRect(50, 50, displayWidth, displayHeight);
+            ctx.fillRect((400 - displayWidth) / 2, (400 - displayHeight) / 2, displayWidth, displayHeight);
 
             canvasDimensions.textContent = `Rectangle - Width: ${a}, Height: ${b}`;
         } else if (shape === "triangle") {
-            const base = a;
-            const height = b;
+            const maxDim = Math.max(a, b);
+            const scale = 300 / maxDim;
+
+            const displayBase = a * scale;
+            const displayHeight = b * scale;
 
             ctx.beginPath();
-            ctx.moveTo(200, 50); // top vertex
-            ctx.lineTo(200 - base / 2, 50 + height); // bottom-left
-            ctx.lineTo(200 + base / 2, 50 + height); // bottom-right
+            ctx.moveTo(200, (400 - displayHeight) / 2); // top vertex
+            ctx.lineTo(200 - displayBase / 2, 400 - (400 - displayHeight) / 2); // bottom-left
+            ctx.lineTo(200 + displayBase / 2, 400 - (400 - displayHeight) / 2); // bottom-right
             ctx.closePath();
 
             ctx.fillStyle = "#2ECC40";
             ctx.fill();
 
-            ctx.strokeStyle = "#FF851B";
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
             canvasDimensions.textContent = `Triangle - Base: ${a}, Height: ${b}`;
         } else if (shape === "circle") {
-            const displayRadius = Math.min(150, radius);
+            const scale = 150 / radius;
+            const displayRadius = radius * scale;
 
             ctx.beginPath();
             ctx.arc(200, 200, displayRadius, 0, 2 * Math.PI);
             ctx.fillStyle = "#B10DC9";
             ctx.fill();
-
-            ctx.strokeStyle = "#FFDC00";
-            ctx.lineWidth = 2;
-            ctx.stroke();
 
             canvasDimensions.textContent = `Circle - Radius: ${radius}`;
         }
