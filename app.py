@@ -1,3 +1,4 @@
+#!/.venv python3
 from flask import Flask, render_template, request, jsonify
 import json
 import os
@@ -41,4 +42,4 @@ def calculate():
     return jsonify({'result': result})
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv("FLASK_ENV") == "development", port=int(os.getenv("FLASK_PORT", 5000)))
+    app.run(debug=os.getenv("FLASK_ENV") == "development", port=int(os.getenv("FLASK_PORT", 5000)), host=os.getenv("FLASK_HOST", "127.0.0.1"))

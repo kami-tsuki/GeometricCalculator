@@ -18,15 +18,12 @@
     </section>
     <section id="formContainer">
         <div class="form-group">
-            <label>Select Shape:</label>
-            <div id="shapeRadios" class="radio-group">
+            <label for="shape">Select Shape:</label>
+            <select id="shape" onchange="updateInputsAndCanvas()" class="dropdown">
                 {% for shape in config.shapes %}
-                    <label class="radio-label">
-                        <input type="radio" name="shape" value="{{ shape }}" onchange="updateInputsAndCanvas()" class="radio-input" />
-                        {{ shape.capitalize() }}
-                    </label>
+                    <option value="{{ shape }}">{{ shape.capitalize() }}</option>
                 {% endfor %}
-            </div>
+            </select>
         </div>
         <div id="inputs"></div>
         <div class="form-group">
